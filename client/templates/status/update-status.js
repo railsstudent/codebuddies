@@ -51,43 +51,25 @@ Template.updateStatus.events({
 			$('.charactersLeft').text(140);
     },
     'click #update-learned-btn': function(event) {
-        if (!Meteor.userId()) {
-            sweetAlert({
-                imageUrl: '/images/slack-signin-example.jpg',
-                imageSize: '140x120',
-                showCancelButton: true,
-                title: TAPi18n.__("you_are_almost_there"),
-                html: TAPi18n.__("continue_popup_text"),
-                confirmButtonText: TAPi18n.__("sign_in_with_slack"),
-                cancelButtonText: TAPi18n.__("not_now")
-            },
-            function(){
-              var options = {
-                requestPermissions: ['identity.basic', 'identity.email']
-              };
-              Meteor.loginWithSlack(options);
-            });
-        } else {
-            var learningStatus = $('#learned-text').val();
+        var learningStatus = $('#learned-text').val();
 
-            if ($.trim(learningStatus) == '') {
-                $('#topic').focus();
-                sweetAlert({
-                    title: TAPi18n.__("Accomplishment can't be empty"),
-                    confirmButtonText: TAPi18n.__("ok"),
-                    type: 'error'
-                });
-                return;
-            }
-            var data = {
-                user_id: Meteor.userId(),
-                username: Meteor.user().username,
-                title: learningStatus,
-            }
-            Meteor.call("addLearning", data, function(error, result) {});
-            $('#learned-text').val('');
-			      $('.learnedCharactersLeft').text(280);
+        if ($.trim(learningStatus) == '') {
+            $('#topic').focus();
+            sweetAlert({
+                title: TAPi18n.__("Accomplishment can't be empty"),
+                confirmButtonText: TAPi18n.__("ok"),
+                type: 'error'
+            });
+            return;
         }
+        var data = {
+            user_id: Meteor.userId(),
+            username: Meteor.user().username,
+            title: learningStatus,
+        }
+        Meteor.call("addLearning", data, function(error, result) {});
+        $('#learned-text').val('');
+	      $('.learnedCharactersLeft').text(280);
     },
     'click .btn-hangout-status': function(event) {
         var currentType = $(event.currentTarget).attr('data-type');
