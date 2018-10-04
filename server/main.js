@@ -119,7 +119,7 @@ let sendInviteEmail = function(email) {
   const template_name = "new_user_invite";
 
   const template_data = { base_url: Meteor.absoluteUrl() };
-  console.log(mail_data, template_data);
+  console.log(mail_data, template_name, template_data);
   CBMailer(mail_data, template_name, template_data);
 };
 
