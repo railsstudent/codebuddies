@@ -23,7 +23,7 @@
     },
     "smtp": {
       "username": "SMTP_Injection",
-      "password": "262d2acea308cdd96213d83c97fc7ba8ab3873c1",
+      "password": "b4d17631c7f27b68b23571ab0bc7810a261e94fc",
       "server": "smtp.sparkpostmail.com",
       "port": "587"
     }
@@ -47,5 +47,6 @@
   "github_clientsecret": "a447f020986a5b85b3d5b4b550eaf932809d12cc",
   "slackAppToken": "XXX",
   "slackOauthToken": "xoxa-1234",
-  "cbJarvisId": "1234"
+  "cbJarvisId": "1234",
+  "slack_invite_subject": "linda has invited you to join a Slack workspace"
 }
