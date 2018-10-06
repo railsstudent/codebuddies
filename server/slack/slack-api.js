@@ -5,7 +5,8 @@ import { HTTP } from "meteor/http";
 
 const URLS = {
   USER_INFO: "https://slack.com/api/users.info",
-  POST_MESSAGE: "https://slack.com/api/chat.postMessage"
+  POST_MESSAGE: "https://slack.com/api/chat.postMessage",
+  SLACK_INVITE: "https://slack.com/api/users.admin.invite"
 };
 
 const SlackAPI = {
@@ -32,6 +33,15 @@ const SlackAPI = {
     const { ok, error } = (response && response.data) || {};
     console.log("SlackAPI.postMessage[response]:", { ok, error });
     return response.data;
+  },
+
+  inviteUserUrl(email) {
+    const SLACK_TOKEN = Meteor.settings.slackAppToken;
+    const QUERY_PARAMS = `email=${email}&token=${SLACK_TOKEN}&set_active=true`;
+    const slackInviteUseUrl = `${URLS.SLACK_INVITE}?${QUERY_PARAMS}`;
+    const response = HTTP.call("GET", slackInviteUseUrl);
+    console.log(response);
+    return slackInviteUseUrl;
   }
 };
 

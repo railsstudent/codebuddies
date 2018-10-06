@@ -1,6 +1,7 @@
 import md5 from "md5";
 import "/imports/startup/server";
 import { CBMailer } from "/imports/libs/server/cb_mailer/";
+import SlackAPI from "./slack/slack-api";
 
 Meteor.startup(function() {
   // migration
@@ -117,8 +118,8 @@ let sendInviteEmail = function(email) {
 
   // private/email/new_user_invite.html
   const template_name = "new_user_invite";
-
-  const template_data = { base_url: Meteor.absoluteUrl() };
+  const joinSlackUrl = SlackAPI.inviteUserUrl(email);
+  const template_data = { base_url: Meteor.absoluteUrl(), joinSlackUrl };
   console.log(mail_data, template_name, template_data);
   CBMailer(mail_data, template_name, template_data);
 };
