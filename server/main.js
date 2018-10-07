@@ -1,6 +1,5 @@
 import md5 from "md5";
 import "/imports/startup/server";
-import { CBMailer } from "/imports/libs/server/cb_mailer/";
 import SlackAPI from "./slack/slack-api";
 
 Meteor.startup(function() {
@@ -109,21 +108,6 @@ let swapUsernameIfExists = function(username) {
   }
 };
 
-let sendInviteEmail = function(email) {
-  const mail_data = {
-    to: email,
-    from: Meteor.settings.email_from,
-    subject: Meteor.settings.slack_invite_subject
-  };
-
-  // private/email/new_user_invite.html
-  const template_name = "new_user_invite";
-  const joinSlackUrl = SlackAPI.inviteUserUrl(email);
-  const template_data = { base_url: Meteor.absoluteUrl(), joinSlackUrl };
-  console.log(mail_data, template_name, template_data);
-  CBMailer(mail_data, template_name, template_data);
-};
-
 let swapUserIfExists = function(email, service, user) {
   const existingUser = Meteor.users.findOne({ email: email });
 
@@ -137,7 +121,7 @@ let swapUserIfExists = function(email, service, user) {
     Meteor.users.remove({ _id: existingUser._id });
   } else {
     user.username = swapUsernameIfExists(user.username);
-    sendInviteEmail(user.email);
+    SlackAPI.inviteUser(user.email);
   }
 
   return user;
@@ -191,7 +175,7 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = profile;
     user.email = options.email;
 
-    sendInviteEmail(user.email);
+    SlackAPI.inviteUser(user.email);
     return user;
   }
 });
